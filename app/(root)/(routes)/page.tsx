@@ -1,21 +1,19 @@
-"use client"
+"use client";
 import Modal from "@/components/modal";
+import { useStoreModal } from "@/hooks/use-store-modal";
 import { UserButton } from "@clerk/nextjs";
-import React from "react";
+import React, { useEffect } from "react";
 
 type Props = {};
 
 export default function AdminHome({}: Props) {
-  return (
-    <div>
-      <h1>
-        <Modal
-          title="Create Your store"
-          description="This is your dexcripction"
-          isOpen
-          onClose={() => {}}
-        ></Modal>
-      </h1>
-    </div>
-  );
+  const onOpen = useStoreModal((state) => state.onOpen);
+  const isOpen = useStoreModal((state) => state.isOpen);
+
+  useEffect(() => {
+    if (!isOpen) {
+      onOpen();
+    }
+  }, [isOpen, onOpen]);
+  return null;
 }

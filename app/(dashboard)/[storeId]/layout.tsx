@@ -4,14 +4,12 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { redirect } from "next/navigation";
 import { Store } from "@/types.db";
 
-import React from "react";
-
-type Props = {};
-
-interface setupProps {
+interface dashBoardLayoutProps {
   children: React.ReactNode;
+  params: { storeId: string };
 }
-async function Setuplayout({ children }: setupProps) {
+
+const DashboardLayout = async ({ children, params }: dashBoardLayoutProps) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -19,21 +17,29 @@ async function Setuplayout({ children }: setupProps) {
   }
 
   const storeSnap = await getDocs(
-    query(collection(db, "stores"), where("userId", "==", userId))
+    query(
+      collection(db, "stores"),
+      where("userId", "==", userId),
+      where("id", "==", params.storeId)
+    )
   );
 
-  let store = null as any;
+  let store;
 
   storeSnap.forEach((doc) => {
     store = doc.data() as Store;
-    return;
   });
-  console.log("store: ", store);
 
-  if (store) {
-    redirect(`/${store?.id}`);
+  if (!store) {
+    redirect("/");
   }
-  return <div>{children}</div>;
-}
 
-export default Setuplayout;
+  return (
+    <div>
+      {" "}
+      <h1>this is dashboard</h1>
+      {children}
+    </div>
+  );
+};
+export default DashboardLayout;
