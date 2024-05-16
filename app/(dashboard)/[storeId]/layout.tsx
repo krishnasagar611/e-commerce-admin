@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { redirect } from "next/navigation";
 import { Store } from "@/types.db";
+import Navbar from "@/components/Navbar/Navbar";
 
 interface dashBoardLayoutProps {
   children: React.ReactNode;
@@ -37,7 +38,7 @@ const DashboardLayout = async ({ children, params }: dashBoardLayoutProps) => {
   return (
     <div>
       {" "}
-      <h1>this is dashboard</h1>
+      <Navbar/>
       {children}
     </div>
   );
